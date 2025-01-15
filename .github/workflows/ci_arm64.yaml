@@ -102,7 +102,7 @@ jobs:
       - name: Build backend docker image
         run: |
           cd ./EdgeSolution/modules/BackendModule
-          docker buildx build --platform linux/arm64 -t ${{env.ACR_IMAGE_PATH_BACKEND}} -f Dockerfile.arm64v8 .
+          docker build -t ${{env.ACR_IMAGE_PATH_BACKEND}} -f Dockerfile.arm64v8 .
 
       - name: Build frontend docker image
         run: |
