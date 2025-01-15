@@ -120,10 +120,9 @@ jobs:
       - name: Publish artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: deploymentsTemplates
+          name: deploymentTemplates
           path: |
             ./EdgeSolution/*.deployment.template.json
-            ./EdgeSolution/*.sh
           include-hidden-files: true
 
   deploy-de:
