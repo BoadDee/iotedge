@@ -48,6 +48,8 @@ jobs:
       - name: list files
         run: |
           ls -R ${{github.workspace}}
+          cd ${{github.workspace}}
+          ls -R
 
       - name: Read variables from env file
         run: |
