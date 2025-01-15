@@ -72,13 +72,13 @@ jobs:
           report_individual_runs: true
 
       - name: Upload coverage report for backend
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: code-coverage-report
           path: ./EdgeSolution/modules/BackendModule/htmlcov
 
       - name: Upload coverage report for frontend
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: code-coverage-report
           path: ./EdgeSolution/modules/FrontendModule/coverage
@@ -115,6 +115,15 @@ jobs:
       - name: Push frontend docker image
         run: |
           docker push ${{env.ACR_IMAGE_PATH_FRONTEND}}
+
+      - name: Publish artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: deploymentsTemplates
+          path: |
+            ./EdgeSolution/*.deployment.template.json
+            ./EdgeSolution/*.sh
+          include-hidden-files: true
 
   deploy-de:
     uses: ./.github/workflows/cd_arm64.yaml

@@ -36,8 +36,14 @@ on:
 jobs:
   Deploy:
     runs-on: ubuntu-latest
+    environment: ${{inputs.environment}}
     steps:
-      - uses: actions/checkout@v3
+      - name: Download a build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: deploymentTemplates
+          path: |
+            deploymenttemplates
 
       - name: Read variables from env file
         run: |
