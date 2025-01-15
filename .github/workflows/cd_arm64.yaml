@@ -51,26 +51,38 @@ jobs:
           cd ${{github.workspace}}
           ls -R
 
-      - name: Read variables from env file
+      - name: Az login
+        uses: azure/login@v2
+        with:
+          client-id: ${{secrets.AZURE_CLIENT_ID}}
+          tenant-id: ${{secrets.AZURE_TENAANT_ID}}
+          subscription-id: ${{secrets.AZURE_SUBSCRIPTION_ID}}
+
+      - name: install template to iot edge
         run: |
-          cp ${{github.workspace}}/EdgeSolution/.env_template ./EdgeSolution/.env
-          cat ./EdgeSolution/.env
-          sed -i 's/^#.*//' ./EdgeSolution/.env
-          sed -i '/^$/d' ./EdgeSolution/.env
-          sed -i 's%^ACR_USERNAME=.*%ACR_USERNAME=${{ secrets.ACR_USERNAME }}%' ./EdgeSolution/.env
-          sed -i 's%^ACR_PASSWORD=.*%ACR_PASSWORD=${{ secrets.ACR_PASSWORD }}%' ./EdgeSolution/.env
-          sed -i 's%^ACR_ADDRESS=.*%ACR_ADDRESS=${{ secrets.ACR_LOGIN_SERVER }}%' ./EdgeSolution/.env
-          # sed -i 's%^LOG_ANALYTICS_WORKSPACE_ID=.*%LOG_ANALYTICS_WORKSPACE_ID=${{ secrets.LOG_ANALYTICS_WORKSPACE_ID}}%' ./EdgeSolution/.env
-          # sed -i 's%^LOG_ANALYTICS_SHARED_KEY=.*%LOG_ANALYTICS_SHARED_KEY=${{ secrets.LOG_ANALYTICS_SHARED_KEY}}%' ./EdgeSolution/.env
-          # sed -i 's%^APPINSIGHTS_CONNECTION_STRING=.*%APPINSIGHTS_CONNECTION_STRING=${{ secrets.APPINSIGHTS_CONNECTION_STRING}}%' ./EdgeSolution/.env
-          sed -i 's%^IOT_HUB_RESOURCE_ID=.*%IOT_HUB_RESOURCE_ID=${{ secrets.IOT_HUB_RESOURCE_ID }}%' ./EdgeSolution/.env
-          cat ./EdgeSolution/.env
+          az iot edge deployment create -d dare-devops-iothub -n ${{inputs.iotHubName}} --content ${{github.workspace}}/deploymenttemplates/deployment.template.json --target-condition "tags.continousDeploy=true" --no-validation --layered true
+          
+
+      # - name: Read variables from env file
+      #   run: |
+      #     cp ${{github.workspace}}/EdgeSolution/.env_template ./EdgeSolution/.env
+      #     cat ./EdgeSolution/.env
+      #     sed -i 's/^#.*//' ./EdgeSolution/.env
+      #     sed -i '/^$/d' ./EdgeSolution/.env
+      #     sed -i 's%^ACR_USERNAME=.*%ACR_USERNAME=${{ secrets.ACR_USERNAME }}%' ./EdgeSolution/.env
+      #     sed -i 's%^ACR_PASSWORD=.*%ACR_PASSWORD=${{ secrets.ACR_PASSWORD }}%' ./EdgeSolution/.env
+      #     sed -i 's%^ACR_ADDRESS=.*%ACR_ADDRESS=${{ secrets.ACR_LOGIN_SERVER }}%' ./EdgeSolution/.env
+      #     # sed -i 's%^LOG_ANALYTICS_WORKSPACE_ID=.*%LOG_ANALYTICS_WORKSPACE_ID=${{ secrets.LOG_ANALYTICS_WORKSPACE_ID}}%' ./EdgeSolution/.env
+      #     # sed -i 's%^LOG_ANALYTICS_SHARED_KEY=.*%LOG_ANALYTICS_SHARED_KEY=${{ secrets.LOG_ANALYTICS_SHARED_KEY}}%' ./EdgeSolution/.env
+      #     # sed -i 's%^APPINSIGHTS_CONNECTION_STRING=.*%APPINSIGHTS_CONNECTION_STRING=${{ secrets.APPINSIGHTS_CONNECTION_STRING}}%' ./EdgeSolution/.env
+      #     sed -i 's%^IOT_HUB_RESOURCE_ID=.*%IOT_HUB_RESOURCE_ID=${{ secrets.IOT_HUB_RESOURCE_ID }}%' ./EdgeSolution/.env
+      #     cat ./EdgeSolution/.env
 
       # install iotedgedev
-      - name: install iotedgedev
-        run: |
-          make install_iotedgedev
-          make install_azure_iot
+      # - name: install iotedgedev
+      #   run: |
+      #     make install_iotedgedev
+      #     make install_azure_iot
 
       # Changing the docker image version based on the current build number
       # - name: Change docker image versions
