@@ -122,7 +122,7 @@ jobs:
         with:
           name: deploymentTemplates
           path: |
-            ${{github.workspace}}/EdgeSolution/*.deployment.template.json
+            ${{github.workspace}}/EdgeSolution/deployment.template.json
           include-hidden-files: true
 
   deploy-de:
