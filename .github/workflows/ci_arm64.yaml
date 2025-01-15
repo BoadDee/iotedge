@@ -102,12 +102,12 @@ jobs:
       - name: Build backend docker image
         run: |
           cd ./EdgeSolution/modules/BackendModule
-          docker build -t ${{env.ACR_IMAGE_PATH_BACKEND}} -f Dockerfile.arm64v8 .
+          docker build -t ${{env.ACR_IMAGE_PATH_BACKEND}} -f Dockerfile.arm32v7 .
 
       - name: Build frontend docker image
         run: |
           cd ./EdgeSolution/modules/FrontendModule
-          docker build -t ${{env.ACR_IMAGE_PATH_FRONTEND}} -f Dockerfile.arm64v8 .
+          docker build -t ${{env.ACR_IMAGE_PATH_FRONTEND}} -f Dockerfile.arm32v7 .
 
       - name: Push backend docker image
         run: |
