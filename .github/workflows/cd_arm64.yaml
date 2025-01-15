@@ -45,6 +45,10 @@ jobs:
           path: |
             deploymenttemplates
 
+      - name: list files
+        run: |
+          ls -R ${{github.workspace}}
+
       - name: Read variables from env file
         run: |
           cp ${{github.workspace}}/EdgeSolution/.env_template ./EdgeSolution/.env
