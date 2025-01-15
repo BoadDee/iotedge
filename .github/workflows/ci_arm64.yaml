@@ -5,7 +5,15 @@ on: # yamllint disable-line rule:truthy
   push:
     branches:
       - main
+      - features/*
   workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+  id-token: write
+  checks: write
+  issues: read
 
 env:
   ACR_IMAGE_PATH_FRONTEND: ${{ secrets.ACR_LOGIN_SERVER }}/frontendmodule:1.0.${{ github.run_number }}-arm64v8
@@ -107,3 +115,15 @@ jobs:
       - name: Push frontend docker image
         run: |
           docker push ${{env.ACR_IMAGE_PATH_FRONTEND}}
+
+  deploy-de:
+    uses: ./.github/workflows/cd_arm64.yaml
+    needs: build
+    with:
+      environment: de
+      iotHubName: dare
+
+    secrets:
+      AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      AZURE_TENAANT_ID: ${{ secrets.AZURE_TENAANT_ID }}
+      AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
