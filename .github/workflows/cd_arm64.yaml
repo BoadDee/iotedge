@@ -47,7 +47,7 @@ jobs:
 
       - name: Read variables from env file
         run: |
-          cp ./EdgeSolution/.env_template ./EdgeSolution/.env
+          cp ${{github.workspace}}/EdgeSolution/.env_template ./EdgeSolution/.env
           cat ./EdgeSolution/.env
           sed -i 's/^#.*//' ./EdgeSolution/.env
           sed -i '/^$/d' ./EdgeSolution/.env
