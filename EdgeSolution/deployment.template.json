@@ -103,7 +103,7 @@
             }
           },
           
-    "$edgeHub": {
+    "edgeHub": {
       "properties.desired": {
         "schemaVersion": "1.1",
         "routes": {},
