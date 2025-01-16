@@ -58,6 +58,9 @@ jobs:
           tenant-id: ${{secrets.AZURE_TENANT_ID}}
           subscription-id: ${{secrets.AZURE_SUBSCRIPTION_ID}}
 
+      - name: Install Azure IoT extension
+        run: az extension add --name azure-iot
+
       - name: install template to iot edge
         run: |
           az iot edge deployment create -d dare-devops-iothub -n ${{inputs.iotHubName}} --content ${{github.workspace}}/deploymenttemplates/deployment.template.json --target-condition "tags.continousDeploy=true" --no-validation --layered true
@@ -92,17 +95,17 @@ jobs:
       #     cd ${GITHUB_WORKSPACE}/EdgeSolution/modules/BackendModule
       #     cat module.json | jq '.image.tag.version =  $v' --arg v '1.0.${{env.RUN_NUMBER}}' | sponge module.json
 
-      # generating iotedge config file
-      - name: generate deployment config json
-        run: |
-          cd ./EdgeSolution
-          cat .env
-          iotedgedev genconfig -f ./deployment.template.json -P arm64v8
+      # # generating iotedge config file
+      # - name: generate deployment config json
+      #   run: |
+      #     cd ./EdgeSolution
+      #     cat .env
+      #     iotedgedev genconfig -f ./deployment.template.json -P arm64v8
 
-      # Creating the deployment of the modules using the config file generated in the above step
-      - name: Create modules deployment
-        env:
-          IOTHUB_CONN_STRING: ${{ secrets.IOTHUB_CONN_STRING}}
-        run: |
-          cd ./EdgeSolution/config
-          az iot edge deployment create -d "${{ github.run_number }}" -l "${{env.IOTHUB_CONN_STRING}}" -k deployment.arm64v8.json -t "tags.environment='${{env.DEPLOYMENT_TAG}}'"
+      # # Creating the deployment of the modules using the config file generated in the above step
+      # - name: Create modules deployment
+      #   env:
+      #     IOTHUB_CONN_STRING: ${{ secrets.IOTHUB_CONN_STRING}}
+      #   run: |
+      #     cd ./EdgeSolution/config
+      #     az iot edge deployment create -d "${{ github.run_number }}" -l "${{env.IOTHUB_CONN_STRING}}" -k deployment.arm64v8.json -t "tags.environment='${{env.DEPLOYMENT_TAG}}'"
