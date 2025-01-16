@@ -110,6 +110,7 @@ jobs:
           
           for folder in modules/*; do
             echo "$(basename $folder)"
+            cd $folder
             for file in $folder/*; do
               echo "$(basename $file)"
               moduleName=$(basename $folder)
