@@ -15,7 +15,7 @@ on:
     secrets:
       AZURE_CLIENT_ID:
         required: true
-      AZURE_TENAANT_ID: 
+      AZURE_TENANT_ID: 
         required: true
       AZURE_SUBSCRIPTION_ID:
         required: true
