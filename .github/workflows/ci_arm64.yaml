@@ -105,7 +105,7 @@ jobs:
 
       - name: Build and push docker images
         run: |
-          cd ./EdgeSolution
+          cd ${{github.workspace}}/EdgeSolution
           
           for folder in modules/*; do
             echo "$(basename $folder)"
@@ -124,6 +124,7 @@ jobs:
                 fi
               fi
             done
+          done
           
       # - name: Build backend docker image
       #   run: |
