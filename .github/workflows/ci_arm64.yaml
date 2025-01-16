@@ -133,7 +133,7 @@ jobs:
         run: |
           cd ./EdgeSolution/modules/BackendModule
           docker build -t ${{env.ACR_IMAGE_PATH_BACKEND}} -f Dockerfile.arm32v7 .
-          docker build -t ${{env.ACR_IMAGE_PATH_BACKEND}} -f Dockerfile.arm32v7.debug .
+          docker build -t ${{env.ACR_IMAGE_PATH_BACKENDdebug}} -f Dockerfile.arm32v7.debug .
           docker push ${{env.ACR_IMAGE_PATH_BACKEND}}
           docker push ${{env.ACR_IMAGE_PATH_BACKENDdebug}}
 
@@ -141,7 +141,7 @@ jobs:
         run: |
           cd ./EdgeSolution/modules/FrontendModule
           docker build -t ${{env.ACR_IMAGE_PATH_FRONTEND}} -f Dockerfile.arm32v7 .
-          docker build -t ${{env.ACR_IMAGE_PATH_FRONTEND}} -f Dockerfile.arm32v7.debug .
+          docker build -t ${{env.ACR_IMAGE_PATH_FRONTENDkdebug}} -f Dockerfile.arm32v7.debug .
           docker push ${{env.ACR_IMAGE_PATH_FRONTEND}}
           docker push ${{env.ACR_IMAGE_PATH_FRONTENDdebug}}
 
