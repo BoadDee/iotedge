@@ -103,23 +103,45 @@ jobs:
           password: ${{ secrets.ACR_PASSWORD }}
           login-server: ${{ secrets.ACR_LOGIN_SERVER }}
 
-      - name: Build backend docker image
+      - name: Build and push docker images
         run: |
-          cd ./EdgeSolution/modules/BackendModule
-          docker build -t ${{env.ACR_IMAGE_PATH_BACKEND}} -f Dockerfile.arm32v7 .
+          cd ./EdgeSolution
+          
+          for folder in modules/*; do
+            echo "$(basename $folder)"
+            for file in $folder/*; do
+              echo "$(basename $file)"
+              moduleName=$(basename $folder)
+              if [ -f "$file/Dockerfile.arm64v8" ]; then
+                echo "Building $file"
+                docker build -t ${{env.ACR_LOGIN_SERVER}}/$(basename $folder)/$(basename $file):1.0.${{ github.run_number }}-arm64v8 -f $file/Dockerfile.arm64v8 .
+                docker push ${{env.ACR_LOGIN_SERVER}}/$(basename $folder)/$(basename $file):1.0.${{ github.run_number }}-arm64v8
+              else
+                if [ -f "$file/Dockerfile.arm64v8.debug" ]; then
+                  echo "Building $file"
+                  docker build -t ${{env.ACR_LOGIN_SERVER}}/$(basename $folder)/$(basename $file):1.0.${{ github.run_number }}-arm64v8 -f $file/Dockerfile.arm64v8.debug .
+                  docker push ${{env.ACR_LOGIN_SERVER}}/$(basename $folder)/$(basename $file):1.0.${{ github.run_number }}-arm64v8
+                fi
+              fi
+            done
+          
+      # - name: Build backend docker image
+      #   run: |
+      #     cd ./EdgeSolution/modules/BackendModule
+      #     docker build -t ${{env.ACR_IMAGE_PATH_BACKEND}} -f Dockerfile.arm32v7 .
 
-      - name: Build frontend docker image
-        run: |
-          cd ./EdgeSolution/modules/FrontendModule
-          docker build -t ${{env.ACR_IMAGE_PATH_FRONTEND}} -f Dockerfile.arm32v7 .
+      # - name: Build frontend docker image
+      #   run: |
+      #     cd ./EdgeSolution/modules/FrontendModule
+      #     docker build -t ${{env.ACR_IMAGE_PATH_FRONTEND}} -f Dockerfile.arm32v7 .
 
-      - name: Push backend docker image
-        run: |
-          docker push ${{env.ACR_IMAGE_PATH_BACKEND}}
+      # - name: Push backend docker image
+      #   run: |
+      #     docker push ${{env.ACR_IMAGE_PATH_BACKEND}}
 
-      - name: Push frontend docker image
-        run: |
-          docker push ${{env.ACR_IMAGE_PATH_FRONTEND}}
+      # - name: Push frontend docker image
+      #   run: |
+      #     docker push ${{env.ACR_IMAGE_PATH_FRONTEND}}
       
       - name: Read variables from env file
         run: |
