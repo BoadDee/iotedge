@@ -101,20 +101,12 @@
               "image": "${MODULES.BackendModule}",
               "createOptions": {}
             }
-          },
+          }
           
-    "$edgeHub": {
-      "properties.desired": {
-        "schemaVersion": "1.1",
-        "routes": {},
-        "storeAndForwardConfiguration": {
-          "timeToLiveSecs": 7200
-        }
-      }
+    
     }
   }
 }
       }
     }
   }
-}
