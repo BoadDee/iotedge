@@ -112,15 +112,14 @@ jobs:
             for file in $folder/*; do
               echo "$(basename $file)"
               moduleName=$(basename $folder)
-              if [ -f "$file/Dockerfile.arm64v8" ]; then
-                echo "Building $file"
-                docker build -t ${{env.ACR_LOGIN_SERVER}}/$(basename $folder)/$(basename $file):1.0.${{ github.run_number }}-arm64v8 -f $file/Dockerfile.arm64v8 .
-                docker push ${{env.ACR_LOGIN_SERVER}}/$(basename $folder)/$(basename $file):1.0.${{ github.run_number }}-arm64v8
+              if [[ $(basename "$file") == "Dockerfile.arm64v8" ]]; then
+                docker build -t ${{env.ACR_LOGIN_SERVER}}/$(basename $folder):1.0.${{ github.run_number }}-arm64v8 -f $file/Dockerfile.arm64v8 .
+                docker push ${{env.ACR_LOGIN_SERVER}}/$(basename $folder):1.0.${{ github.run_number }}-arm64v8
               else
-                if [ -f "$file/Dockerfile.arm64v8.debug" ]; then
+                if [[ $(basename "$file") == "Dockerfile.arm64v8.debug" ]]; then
                   echo "Building $file"
-                  docker build -t ${{env.ACR_LOGIN_SERVER}}/$(basename $folder)/$(basename $file):1.0.${{ github.run_number }}-arm64v8 -f $file/Dockerfile.arm64v8.debug .
-                  docker push ${{env.ACR_LOGIN_SERVER}}/$(basename $folder)/$(basename $file):1.0.${{ github.run_number }}-arm64v8
+                  docker build -t ${{env.ACR_LOGIN_SERVER}}/$(basename $folder):1.0.${{ github.run_number }}-arm64v8 -f $file/Dockerfile.arm64v8.debug .
+                  docker push ${{env.ACR_LOGIN_SERVER}}/$(basename $folder):1.0.${{ github.run_number }}-arm64v8
                 fi
               fi
             done
