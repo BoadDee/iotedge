@@ -18,6 +18,10 @@ permissions:
 env:
   ACR_IMAGE_PATH_FRONTEND: ${{ secrets.ACR_LOGIN_SERVER }}/frontendmodule:1.0.${{ github.run_number }}-arm64v8
   ACR_IMAGE_PATH_BACKEND: ${{ secrets.ACR_LOGIN_SERVER }}/backendmodule:1.0.${{ github.run_number }}-arm64v8
+  ACR_USERNAME: ${{ secrets.ACR_USERNAME }}
+  ACR_PASSWORD: ${{ secrets.ACR_PASSWORD }}
+  ACR_ADDRESS: ${{ secrets.ACR_LOGIN_SERVER }}
+
 
 jobs:
   build:
@@ -119,18 +123,24 @@ jobs:
       
       - name: Read variables from env file
         run: |
-          # cp ${{github.workspace}}/EdgeSolution/.env_template ./EdgeSolution/.env
-          cat ./EdgeSolution/deployment.template.json
-          sed -i 's/^#.*//' ./EdgeSolution/deployment.template.json
-          sed -i '/^$/d' ./EdgeSolution/deployment.template.json
-          sed -i 's%^ACR_USERNAME=.*%ACR_USERNAME=${{ secrets.ACR_USERNAME }}%' ./EdgeSolution/deployment.template.json
-          sed -i 's%^ACR_PASSWORD=.*%ACR_PASSWORD=${{ secrets.ACR_PASSWORD }}%' ./EdgeSolution/deployment.template.json
-          sed -i 's%^ACR_ADDRESS=.*%ACR_ADDRESS=${{ secrets.ACR_LOGIN_SERVER }}%' ./EdgeSolution/deployment.template.json
-          # sed -i 's%^LOG_ANALYTICS_WORKSPACE_ID=.*%LOG_ANALYTICS_WORKSPACE_ID=${{ secrets.LOG_ANALYTICS_WORKSPACE_ID}}%' ./EdgeSolution/.env
-          # sed -i 's%^LOG_ANALYTICS_SHARED_KEY=.*%LOG_ANALYTICS_SHARED_KEY=${{ secrets.LOG_ANALYTICS_SHARED_KEY}}%' ./EdgeSolution/.env
-          # sed -i 's%^APPINSIGHTS_CONNECTION_STRING=.*%APPINSIGHTS_CONNECTION_STRING=${{ secrets.APPINSIGHTS_CONNECTION_STRING}}%' ./EdgeSolution/.env
-          # sed -i 's%^IOT_HUB_RESOURCE_ID=.*%IOT_HUB_RESOURCE_ID=${{ secrets.IOT_HUB_RESOURCE_ID }}%' ./EdgeSolution/.env
-          cat ./EdgeSolution/deployment.template.json
+          cat ${{github.workspace}}/EdgeSolution/deployment.template.json
+          sed -i 's%\${ACR_USERNAME}%'"${ACR_USERNAME}"'g' ./EdgeSolution/deployment.template.json
+          sed -i 's%\${ACR_PASSWORD}%'"${ACR_PASSWORD}"'g' ./EdgeSolution/deployment.template.json
+          sed -i 's%\${ACR_ADDRESS}%'"${ACR_ADDRESS}"'g' ./EdgeSolution/deployment.template.json
+          cat ${{github.workspace}}/EdgeSolution/deployment.template.json
+
+          # # cp ${{github.workspace}}/EdgeSolution/.env_template ./EdgeSolution/.env
+          # cat ./EdgeSolution/deployment.template.json
+          # sed -i 's/^#.*//' ./EdgeSolution/deployment.template.json
+          # sed -i '/^$/d' ./EdgeSolution/deployment.template.json
+          # sed -i 's%^ACR_USERNAME=.*%ACR_USERNAME=${{ secrets.ACR_USERNAME }}%' ./EdgeSolution/deployment.template.json
+          # sed -i 's%^ACR_PASSWORD=.*%ACR_PASSWORD=${{ secrets.ACR_PASSWORD }}%' ./EdgeSolution/deployment.template.json
+          # sed -i 's%^ACR_ADDRESS=.*%ACR_ADDRESS=${{ secrets.ACR_LOGIN_SERVER }}%' ./EdgeSolution/deployment.template.json
+          # # sed -i 's%^LOG_ANALYTICS_WORKSPACE_ID=.*%LOG_ANALYTICS_WORKSPACE_ID=${{ secrets.LOG_ANALYTICS_WORKSPACE_ID}}%' ./EdgeSolution/.env
+          # # sed -i 's%^LOG_ANALYTICS_SHARED_KEY=.*%LOG_ANALYTICS_SHARED_KEY=${{ secrets.LOG_ANALYTICS_SHARED_KEY}}%' ./EdgeSolution/.env
+          # # sed -i 's%^APPINSIGHTS_CONNECTION_STRING=.*%APPINSIGHTS_CONNECTION_STRING=${{ secrets.APPINSIGHTS_CONNECTION_STRING}}%' ./EdgeSolution/.env
+          # # sed -i 's%^IOT_HUB_RESOURCE_ID=.*%IOT_HUB_RESOURCE_ID=${{ secrets.IOT_HUB_RESOURCE_ID }}%' ./EdgeSolution/.env
+          # cat ./EdgeSolution/deployment.template.json
 
 
       - name: Publish artifacts
@@ -150,5 +160,5 @@ jobs:
 
     secrets:
       AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
-      AZURE_TENANT_ID: ${{ secrets.AZURE_TENAANT_ID }}
+      AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
       AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
