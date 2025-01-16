@@ -114,13 +114,13 @@ jobs:
               echo "$(basename $file)"
               moduleName=$(basename $folder)
               if [[ $(basename "$file") == "Dockerfile.arm64v8" ]]; then
-                docker build -t ${{env.ACR_LOGIN_SERVER}}/${moduleName,,}:1.0.${{ github.run_number }}-arm64v8 -f $file/Dockerfile.arm64v8 .
+                docker build -t ${{env.ACR_LOGIN_SERVER}}/${moduleName,,}:1.0.${{ github.run_number }}-arm64v8 -f "$file" .
                 docker push ${{env.ACR_LOGIN_SERVER}}/${moduleName,,}:1.0.${{ github.run_number }}-arm64v8
               else
                 if [[ $(basename "$file") == "Dockerfile.arm64v8.debug" ]]; then
                   echo "Building $file"
-                  docker build -t ${{env.ACR_LOGIN_SERVER}}/${moduleName,,}:1.0.${{ github.run_number }}-arm64v8 -f $file/Dockerfile.arm64v8.debug .
-                  docker push ${{env.ACR_LOGIN_SERVER}}/${moduleName,,}:1.0.${{ github.run_number }}-arm64v8
+                  docker build -t ${{env.ACR_LOGIN_SERVER}}/${moduleName,,}:1.0.${{ github.run_number }}-arm64v8 -f "$file" .
+                  docker push ${{env.ACR_LOGIN_SERVER}}/${moduleName,,}:1.0.${{ github.run_number }}-arm64v8.debug
                 fi
               fi
             done
