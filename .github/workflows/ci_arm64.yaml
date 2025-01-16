@@ -17,7 +17,9 @@ permissions:
 
 env:
   ACR_IMAGE_PATH_FRONTEND: ${{ secrets.ACR_LOGIN_SERVER }}/frontendmodule:1.0.${{ github.run_number }}-arm64v8
+  ACR_IMAGE_PATH_FRONTENDdebug: ${{ secrets.ACR_LOGIN_SERVER }}/frontendmodule:1.0.${{ github.run_number }}-arm64v8.debug
   ACR_IMAGE_PATH_BACKEND: ${{ secrets.ACR_LOGIN_SERVER }}/backendmodule:1.0.${{ github.run_number }}-arm64v8
+  ACR_IMAGE_PATH_BACKENDdebug: ${{ secrets.ACR_LOGIN_SERVER }}/backendmodule:1.0.${{ github.run_number }}-arm64v8.debug
   ACR_USERNAME: ${{ secrets.ACR_USERNAME }}
   ACR_PASSWORD: ${{ secrets.ACR_PASSWORD }}
   ACR_ADDRESS: ${{ secrets.ACR_LOGIN_SERVER }}
@@ -133,6 +135,7 @@ jobs:
           docker build -t ${{env.ACR_IMAGE_PATH_BACKEND}} -f Dockerfile.arm32v7 .
           docker build -t ${{env.ACR_IMAGE_PATH_BACKEND}} -f Dockerfile.arm32v7.debug .
           docker push ${{env.ACR_IMAGE_PATH_BACKEND}}
+          docker push ${{env.ACR_IMAGE_PATH_BACKENDdebug}}
 
       - name: Build frontend docker image
         run: |
@@ -140,6 +143,7 @@ jobs:
           docker build -t ${{env.ACR_IMAGE_PATH_FRONTEND}} -f Dockerfile.arm32v7 .
           docker build -t ${{env.ACR_IMAGE_PATH_FRONTEND}} -f Dockerfile.arm32v7.debug .
           docker push ${{env.ACR_IMAGE_PATH_FRONTEND}}
+          docker push ${{env.ACR_IMAGE_PATH_FRONTENDdebug}}
 
       # - name: Push backend docker image
       #   run: |
