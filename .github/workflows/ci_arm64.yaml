@@ -125,8 +125,8 @@ jobs:
         run: |
           cat ${{github.workspace}}/EdgeSolution/deployment.template.json
           sed -i 's%\${ACR_USERNAME}%'"${ACR_USERNAME}"'%g' ./EdgeSolution/deployment.template.json
-          sed -i 's%\${ACR_PASSWORD}%'"${ACR_PASSWORD}"'&g' ./EdgeSolution/deployment.template.json
-          sed -i 's%\${ACR_ADDRESS}%'"${ACR_ADDRESS}"'&g' ./EdgeSolution/deployment.template.json
+          sed -i 's%\${ACR_PASSWORD}%'"${ACR_PASSWORD}"'%g' ./EdgeSolution/deployment.template.json
+          sed -i 's%\${ACR_ADDRESS}%'"${ACR_ADDRESS}"'%g' ./EdgeSolution/deployment.template.json
           cat ${{github.workspace}}/EdgeSolution/deployment.template.json
 
           # # cp ${{github.workspace}}/EdgeSolution/.env_template ./EdgeSolution/.env
