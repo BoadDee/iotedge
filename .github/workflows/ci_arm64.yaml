@@ -122,10 +122,10 @@ jobs:
           # cp ${{github.workspace}}/EdgeSolution/.env_template ./EdgeSolution/.env
           cat ./EdgeSolution/deployment.template.json
           sed -i 's/^#.*//' ./EdgeSolution/deployment.template.json
-          sed -i '/^$/d' ./EdgeSolution/.env
-          sed -i 's%^ACR_USERNAME=.*%ACR_USERNAME=${{ secrets.ACR_USERNAME }}%' ./EdgeSolution/.env
-          sed -i 's%^ACR_PASSWORD=.*%ACR_PASSWORD=${{ secrets.ACR_PASSWORD }}%' ./EdgeSolution/.env
-          sed -i 's%^ACR_ADDRESS=.*%ACR_ADDRESS=${{ secrets.ACR_LOGIN_SERVER }}%' ./EdgeSolution/.env
+          sed -i '/^$/d' ./EdgeSolution/deployment.template.json
+          sed -i 's%^ACR_USERNAME=.*%ACR_USERNAME=${{ secrets.ACR_USERNAME }}%' ./EdgeSolution/deployment.template.json
+          sed -i 's%^ACR_PASSWORD=.*%ACR_PASSWORD=${{ secrets.ACR_PASSWORD }}%' ./EdgeSolution/deployment.template.json
+          sed -i 's%^ACR_ADDRESS=.*%ACR_ADDRESS=${{ secrets.ACR_LOGIN_SERVER }}%' ./EdgeSolution/deployment.template.json
           # sed -i 's%^LOG_ANALYTICS_WORKSPACE_ID=.*%LOG_ANALYTICS_WORKSPACE_ID=${{ secrets.LOG_ANALYTICS_WORKSPACE_ID}}%' ./EdgeSolution/.env
           # sed -i 's%^LOG_ANALYTICS_SHARED_KEY=.*%LOG_ANALYTICS_SHARED_KEY=${{ secrets.LOG_ANALYTICS_SHARED_KEY}}%' ./EdgeSolution/.env
           # sed -i 's%^APPINSIGHTS_CONNECTION_STRING=.*%APPINSIGHTS_CONNECTION_STRING=${{ secrets.APPINSIGHTS_CONNECTION_STRING}}%' ./EdgeSolution/.env
